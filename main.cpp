@@ -1,19 +1,38 @@
 #include <iostream>
 #include <fstream>
+#include "quickfix/Message.h"
 
 int main(int argc, char *argv[]){
+    using namespace FIX;
+
     if(argc != 3) {
-        std::cout << "Usage: " << argv[0] << " source_log_file_name target_audit_trail_file_name " << std::endl;
+        std::cout << "Usage: " << argv[0] << " <source_log_file_name> <target_audit_trail_file_name> " << std::endl;
         return 1;
     }
     std::ifstream fixlog(argv[1]);
+    std::ofstream auditlog;
+    auditlog.open(argv[2], std::ofstream::out|std::ofstream::app);
+
     std::string line;
     while (std::getline(fixlog, line))
     {
-        std::cout << line << std::endl;
+        auto pos = line.find(" : ");
+
+        if(pos != std::string::npos) {
+            auto timeStr = line.substr(0, pos - 1);
+            auto fixMessage = line.substr(pos + 3);
+
+            Message message(fixMessage);
+
+            auditlog << timeStr << "|" << message.toString() << std::endl;
+        }
+        else{
+            throw("bad format in the input file");
+        }
     }
 
-    std::cout << "\nAudit Trail file " << argv[2] << " generated!" << std::endl;
+    auditlog.close();
+    std::cout << "Audit Trail file " << argv[2] << " generated!" << std::endl;
 
     return 0;
 }
