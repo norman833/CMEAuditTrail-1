@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "quickfix/Message.h"
+#include "AuditTrailGenerator.h"
 
 int main(int argc, char *argv[]){
     using namespace FIX;
@@ -19,12 +20,12 @@ int main(int argc, char *argv[]){
         auto pos = line.find(" : ");
 
         if(pos != std::string::npos) {
-            auto timeStr = line.substr(0, pos - 1);
+            auto timeStr = line.substr(0, pos);
             auto fixMessage = line.substr(pos + 3);
 
             Message message(fixMessage);
 
-            auditlog << timeStr << "|" << message.toString() << std::endl;
+            auditlog << timeStr << "|" << AuditTrailGenerator::generatorAuditTrail(message) << std::endl;
         }
         else{
             throw("bad format in the input file");
