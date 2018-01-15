@@ -1,5 +1,8 @@
 #include "AuditTrailBase.h"
 
+const std::string AuditTrailBase::FROM_CME = "FROM CME";
+const std::string AuditTrailBase::TO_CME = "TO CME";
+
 AuditTrailBase::AuditTrailBase(const Message &message) : message_(message) {
 
 };
@@ -63,7 +66,11 @@ std::string AuditTrailBase::getReceivingTimestamps() {
 }
 
 std::string AuditTrailBase::getMessageDirection() {
-    return "";
+    auto senderCompID = this->message_.getHeader().getField(FIX::FIELD::SenderCompID);
+    if(senderCompID == "CME")
+        return AuditTrailBase::FROM_CME;
+    else
+        return AuditTrailBase::TO_CME;
 };
 
 std::string AuditTrailBase::getOperatorID() {
@@ -79,11 +86,25 @@ std::string AuditTrailBase::getAccountNumber(){
 }
 
 std::string AuditTrailBase::getSessionID() {
-    return "";
+    if(this->getMessageDirection() == AuditTrailBase::FROM_CME ) {
+        auto targetCompID = this->message_.getHeader().getField(FIX::FIELD::TargetCompID);
+        return targetCompID.substr(0,3);
+    }
+    else{
+        auto senderCompID = this->message_.getHeader().getField(FIX::FIELD::SenderCompID);
+        return senderCompID.substr(0,3);
+    }
 };
 
 std::string AuditTrailBase::getExecutingFirmID() {
-    return "";
+    if(this->getMessageDirection() == AuditTrailBase::FROM_CME ) {
+        auto targetCompID = this->message_.getHeader().getField(FIX::FIELD::TargetCompID);
+        return targetCompID.substr(3,3);
+    }
+    else{
+        auto senderCompID = this->message_.getHeader().getField(FIX::FIELD::SenderCompID);
+        return senderCompID.substr(3,3);
+    }
 };
 
 std::string AuditTrailBase::getManualOrderIdentifier() {

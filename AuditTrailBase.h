@@ -56,9 +56,10 @@ public:
     virtual std::string getOfferPrice();
     virtual std::string getOfferSize();
 
+    static const std::string FROM_CME;
+    static const std::string TO_CME;
 private:
     Message message_;
 };
-
 
 #endif //CMEAUDITTRAIL_AUDITTRAILBASE_H

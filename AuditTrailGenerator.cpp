@@ -1,5 +1,7 @@
 #include "AuditTrailGenerator.h"
+#include "AuditTrailBase.h"
 
 std::string AuditTrailGenerator::generatorAuditTrail(const Message &message) {
-    return message.toString();
+    AuditTrailBase auditTrailBase(message);
+    return auditTrailBase.getCSV();
 }
