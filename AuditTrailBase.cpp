@@ -82,7 +82,12 @@ std::string AuditTrailBase::getMessageDirection() {
 };
 
 std::string AuditTrailBase::getOperatorID() {
-    return "";
+    if(this->getMessageDirection() == AuditTrailBase::TO_CME ) {
+        return message_.getHeader().getField(FIX::FIELD::SenderSubID);
+    }
+    else{
+        return message_.getHeader().getField(FIX::FIELD::TargetSubID);
+    }
 };
 
 std::string AuditTrailBase::getSelf_MatchPreventionID(){
@@ -116,7 +121,12 @@ std::string AuditTrailBase::getExecutingFirmID() {
 };
 
 std::string AuditTrailBase::getManualOrderIdentifier() {
-    return "";
+    if(this->message_.isSetField(1028)){
+        return this->message_.getField(1028);
+    }
+    else {
+        return "";
+    }
 };
 
 std::string AuditTrailBase::getMessageType() {
