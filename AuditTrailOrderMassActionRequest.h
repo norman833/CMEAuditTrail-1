@@ -5,7 +5,7 @@
 
 class AuditTrailOrderMassActionRequest : public AuditTrailBase {
 public:
-    AuditTrailOrderMassActionRequest(const Message& message) : AuditTrailBase(message){};
+    AuditTrailOrderMassActionRequest(const Message& message, const std::string& txnTime) : AuditTrailBase(message, txnTime){};
 };
 
 

@@ -5,7 +5,7 @@
 
 class AuditTrailCancelAmendReject : public AuditTrailBase {
 public:
-    AuditTrailCancelAmendReject(const Message& message) : AuditTrailBase(message){};
+    AuditTrailCancelAmendReject(const Message& message, const std::string& txnTime) : AuditTrailBase(message, txnTime){};
 };
 
 

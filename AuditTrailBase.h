@@ -7,7 +7,7 @@
 using namespace FIX;
 class AuditTrailBase {
 public:
-    explicit  AuditTrailBase(const Message& message);
+    explicit  AuditTrailBase(const Message& message, const std::string& txnTime);
     virtual std::string getCSV();
     virtual std::string getSendingTimestamps();
     virtual std::string getReceivingTimestamps();
@@ -60,6 +60,7 @@ public:
     static const std::string TO_CME;
 private:
     Message message_;
+    std::string txnTime_;
 };
 
 #endif //CMEAUDITTRAIL_AUDITTRAILBASE_H

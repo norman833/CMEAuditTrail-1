@@ -25,7 +25,7 @@ int main(int argc, char *argv[]){
 
             Message message(fixMessage);
 
-            auditlog << timeStr << "|" << AuditTrailGenerator::generatorAuditTrail(message) << std::endl;
+            auditlog << AuditTrailGenerator::generatorAuditTrail(message, timeStr) << std::endl;
         }
         else{
             throw("bad format in the input file");

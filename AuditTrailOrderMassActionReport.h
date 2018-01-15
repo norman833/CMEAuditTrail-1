@@ -5,7 +5,7 @@
 
 class AuditTrailOrderMassActionReport : public AuditTrailBase {
 public:
-    AuditTrailOrderMassActionReport(const Message& message) : AuditTrailBase(message){};
+    AuditTrailOrderMassActionReport(const Message& message, const std::string& txnTime) : AuditTrailBase(message, txnTime){};
 
 };
 

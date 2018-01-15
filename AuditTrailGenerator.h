@@ -6,7 +6,7 @@
 using  namespace FIX;
 class AuditTrailGenerator {
 public:
-    static std::string generatorAuditTrail(const Message& message);
+    static std::string generatorAuditTrail(const Message& message, const std::string& txnTime);
 private:
 
 };

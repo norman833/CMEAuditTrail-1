@@ -3,7 +3,7 @@
 const std::string AuditTrailBase::FROM_CME = "FROM CME";
 const std::string AuditTrailBase::TO_CME = "TO CME";
 
-AuditTrailBase::AuditTrailBase(const Message &message) : message_(message) {
+AuditTrailBase::AuditTrailBase(const Message &message, const std::string& txnTime) : message_(message), txnTime_(txnTime)  {
 
 };
 
@@ -58,11 +58,19 @@ std::string AuditTrailBase::getCSV() {
 };
 
 std::string AuditTrailBase::getSendingTimestamps() {
-    return "";
+    if(this->getMessageDirection() == AuditTrailBase::TO_CME ){
+        return this->message_.getHeader().getField(FIX::FIELD::SendingTime);
+    }
+    else
+        return "";
 };
 
 std::string AuditTrailBase::getReceivingTimestamps() {
-    return "";
+    if(this->getMessageDirection() == AuditTrailBase::FROM_CME ){
+        return this->txnTime_;
+    }
+    else
+        return "";
 }
 
 std::string AuditTrailBase::getMessageDirection() {
