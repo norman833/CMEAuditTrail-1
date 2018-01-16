@@ -61,6 +61,8 @@ public:
 private:
     Message message_;
     std::string txnTime_;
+
+    std::string testAndGetField(const int field);
 };
 
 #endif //CMEAUDITTRAIL_AUDITTRAILBASE_H

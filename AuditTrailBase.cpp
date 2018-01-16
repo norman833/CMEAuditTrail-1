@@ -6,6 +6,14 @@ const std::string AuditTrailBase::TO_CME = "TO CME";
 AuditTrailBase::AuditTrailBase(const Message &message, const std::string& txnTime) : message_(message), txnTime_(txnTime)  {
 
 };
+std::string AuditTrailBase::testAndGetField(const int field) {
+    if(this->message_.isSetField(field)){
+        return this->message_.getField(field);
+    }
+    else{
+        return "";
+    }
+}
 
 std::string AuditTrailBase::getCSV() {
     std::string delimitor = ",";
@@ -61,24 +69,28 @@ std::string AuditTrailBase::getSendingTimestamps() {
     if(this->getMessageDirection() == AuditTrailBase::TO_CME ){
         return this->message_.getHeader().getField(FIX::FIELD::SendingTime);
     }
-    else
+    else{
         return "";
+    }
 };
 
 std::string AuditTrailBase::getReceivingTimestamps() {
     if(this->getMessageDirection() == AuditTrailBase::FROM_CME ){
         return this->txnTime_;
     }
-    else
+    else{
         return "";
+    }
 }
 
 std::string AuditTrailBase::getMessageDirection() {
     auto senderCompID = this->message_.getHeader().getField(FIX::FIELD::SenderCompID);
-    if(senderCompID == "CME")
+    if(senderCompID == "CME") {
         return AuditTrailBase::FROM_CME;
-    else
+    }
+    else{
         return AuditTrailBase::TO_CME;
+    }
 };
 
 std::string AuditTrailBase::getOperatorID() {
@@ -91,11 +103,11 @@ std::string AuditTrailBase::getOperatorID() {
 };
 
 std::string AuditTrailBase::getSelf_MatchPreventionID(){
-    return "";
+    return this->testAndGetField(7928);
 };
 
 std::string AuditTrailBase::getAccountNumber(){
-    return "";
+    return this->testAndGetField(FIX::FIELD::Account);
 }
 
 std::string AuditTrailBase::getSessionID() {
@@ -121,28 +133,32 @@ std::string AuditTrailBase::getExecutingFirmID() {
 };
 
 std::string AuditTrailBase::getManualOrderIdentifier() {
-    if(this->message_.isSetField(1028)){
-        return this->message_.getField(1028);
-    }
-    else {
-        return "";
-    }
+    return this->testAndGetField(FIX::FIELD::ManualOrderIndicator);
 };
 
 std::string AuditTrailBase::getMessageType() {
-    return "";
+    std::string msgType{""};
+
+    msgType = this->message_.getHeader().getField(FIX::FIELD::MsgType);
+
+    if(msgType == "8"){
+        std::string ordStatus = this->message_.getField(FIX::FIELD::OrdStatus);
+        msgType = msgType + "/" + ordStatus;
+    }
+
+    return msgType;
 };
 
 std::string AuditTrailBase::getCustomerTypeIndicator() {
-    return "";
+    return this->testAndGetField(9702);
 };
 
 std::string AuditTrailBase::getOrigin() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::CustomerOrFirm);
 };
 
 std::string AuditTrailBase::getCMEGlobexMessageID() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::ExecID);
 };
 
 std::string AuditTrailBase::getMessageLinkID() {
@@ -158,15 +174,21 @@ std::string AuditTrailBase::getSpreadLegLinkID() {
 };
 
 std::string AuditTrailBase::getInstrumentDescription(){
-    return "";
+    return this->testAndGetField(FIX::FIELD::SecurityDesc);
 };
 
 std::string AuditTrailBase::getMarketSegmentID() {
-    return "";
+    if(this->getMessageDirection() == AuditTrailBase::TO_CME){
+        return this->message_.getHeader().getField(FIX::FIELD::TargetSubID);
+    }
+    else {
+        return this->message_.getHeader().getField(FIX::FIELD::SenderSubID);
+    }
 };
 
 std::string AuditTrailBase::getClientOrderID() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::ClOrdID);
+
 };
 
 std::string AuditTrailBase::getCMEGlobexOrderID() {
@@ -174,23 +196,24 @@ std::string AuditTrailBase::getCMEGlobexOrderID() {
 };
 
 std::string AuditTrailBase::getBuySellIndicator() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::Side);
 };
 
 std::string AuditTrailBase::getQuantity() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::Quantity);
 };
 
 std::string AuditTrailBase::getLimitPrice() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::Price);
 }
 
+
 std::string AuditTrailBase::getStopPrice() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::StopPx);
 }
 
 std::string AuditTrailBase::getOrderType() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::OrdType);
 }
 
 std::string AuditTrailBase::getOrderQualifier() {
