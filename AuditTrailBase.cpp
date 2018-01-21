@@ -163,11 +163,13 @@ std::string AuditTrailBase::getCMEGlobexMessageID() {
 };
 
 std::string AuditTrailBase::getMessageLinkID() {
-    return "";
+    //http://www.cmegroup.com/tools-information/webhelp/autocert-audit-trail/Content/MsgLinkID.html
+    return ""; //TODO
 };
 
 std::string AuditTrailBase::getOrderFlowID() {
-    return "";
+    //http://www.cmegroup.com/tools-information/webhelp/autocert-audit-trail/Content/MsgLinkID.html
+    return this->testAndGetField(9717);//CorrelationClOrdID
 };
 
 std::string AuditTrailBase::getSpreadLegLinkID() {

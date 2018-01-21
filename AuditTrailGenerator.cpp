@@ -3,5 +3,9 @@
 
 std::string AuditTrailGenerator::generatorAuditTrail(const Message &message, const std::string& txnTime) {
     AuditTrailBase auditTrailBase(message, txnTime );
-    return auditTrailBase.getCSV();
+    auto msgType = message.getHeader().getField(FIX::FIELD::MsgType);
+    if(message.isApp() || (message.isAdmin() && (msgType == "3" || msgType == "j")) )
+        return auditTrailBase.getCSV();
+    else
+        return "";
 }
