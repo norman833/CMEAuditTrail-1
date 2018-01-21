@@ -6,6 +6,7 @@ const std::string AuditTrailBase::TO_CME = "TO CME";
 AuditTrailBase::AuditTrailBase(const Message &message, const std::string& txnTime) : message_(message), txnTime_(txnTime)  {
 
 };
+
 std::string AuditTrailBase::testAndGetField(const int field) {
     if(this->message_.isSetField(field)){
         return this->message_.getField(field);
@@ -217,71 +218,75 @@ std::string AuditTrailBase::getOrderType() {
 }
 
 std::string AuditTrailBase::getOrderQualifier() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::TimeInForce);
 }
 
 std::string AuditTrailBase::getIFMFlag() {
-    return "";
+    return this->testAndGetField(9768);
 }
 
 std::string AuditTrailBase::getDisplayQuantity(){
-    return "";
+    return this->testAndGetField(FIX::FIELD::MaxShow);
 };
 
 std::string AuditTrailBase::getMinimumQuantity() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::MinQty);
 }
 
 std::string AuditTrailBase::getCountryofOrigin() {
-    return "";
+    if(this->getMessageDirection() == AuditTrailBase::TO_CME ) {
+        return this->message_.getHeader().getField(FIX::FIELD::SenderLocationID);
+    }
+    else{
+        return "";
+    }
 }
 
 std::string AuditTrailBase::getFillPrice() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::LastPx);
 }
 
 std::string AuditTrailBase::getFillQuantity() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::LastQty);
 }
 
 std::string AuditTrailBase::getCumulativeQuantity() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::CumQty);
 }
 
 std::string AuditTrailBase::getRemainingQuantity() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::LeavesQty);
 }
 
 std::string AuditTrailBase::getAggressorFlag() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::AggressorIndicator);
 }
 
 std::string AuditTrailBase::getSourceofCancellation() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::ExecRestatementReason);
 }
 
 std::string AuditTrailBase::getRejectReason() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::OrdRejReason);
 }
 
 std::string AuditTrailBase::getProcessedQuotes() {
-    return "";
+    return this->testAndGetField(9772);//NoProcessedEntries
 }
 std::string AuditTrailBase::getCrossID() {
-
-    return "";
+    return this->testAndGetField(FIX::FIELD::CrossID);
 }
 
 std::string AuditTrailBase::getQuoteRequestID() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::QuoteReqID);
 }
 
 std::string AuditTrailBase::getMessageQuoteID() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::QuoteID);
 }
 
 std::string AuditTrailBase::getQuoteEntryID() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::QuoteEntryID);
 }
 
 std::string AuditTrailBase::getBidPrice() {
