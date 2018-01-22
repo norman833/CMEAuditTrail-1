@@ -14,6 +14,8 @@ int main(int argc, char *argv[]){
     std::ofstream auditlog;
     auditlog.open(argv[2], std::ofstream::out|std::ofstream::app);
 
+    auditlog << AuditTrailGenerator::generateHeader() << std::endl;
+
     std::string line;
     while (std::getline(fixlog, line))
     {
@@ -24,7 +26,7 @@ int main(int argc, char *argv[]){
             auto fixMessage = line.substr(pos + 3);
 
             Message message(fixMessage);
-            auto auditTrail = AuditTrailGenerator::generatorAuditTrail(message, timeStr);
+            auto auditTrail = AuditTrailGenerator::generateAuditTrail(message, timeStr);
             if(auditTrail.size())
                 auditlog << auditTrail << std::endl;
         }
