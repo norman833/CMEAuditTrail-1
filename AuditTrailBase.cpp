@@ -195,7 +195,7 @@ std::string AuditTrailBase::getClientOrderID() {
 };
 
 std::string AuditTrailBase::getCMEGlobexOrderID() {
-    return "";
+    return this->testAndGetField(FIX::FIELD::OrderID);
 };
 
 std::string AuditTrailBase::getBuySellIndicator() {
@@ -203,7 +203,7 @@ std::string AuditTrailBase::getBuySellIndicator() {
 };
 
 std::string AuditTrailBase::getQuantity() {
-    return this->testAndGetField(FIX::FIELD::Quantity);
+    return this->testAndGetField(FIX::FIELD::OrderQty);
 };
 
 std::string AuditTrailBase::getLimitPrice() {
