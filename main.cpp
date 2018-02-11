@@ -24,8 +24,11 @@ int main(int argc, char *argv[]){
         if(pos != std::string::npos) {
             auto timeStr = line.substr(0, pos);
             auto fixMessage = line.substr(pos + 3);
+            //std::ifstream dataStream("../FIX50SP2.xml");
+            //DataDictionary dataDictionary(dataStream);
 
             Message message(fixMessage);
+
             auto auditTrail = AuditTrailGenerator::generateAuditTrail(message, timeStr);
             if(auditTrail.size())
                 auditlog << auditTrail << std::endl;

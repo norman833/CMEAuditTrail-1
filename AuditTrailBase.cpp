@@ -146,6 +146,10 @@ std::string AuditTrailBase::getMessageType() {
         std::string ordStatus = this->message_.getField(FIX::FIELD::OrdStatus);
         msgType = msgType + "/" + ordStatus;
     }
+    else if(msgType == "CA" || msgType == "BZ"){
+        std::string massActionScope = this->message_.getField(FIX::FIELD::MassActionScope);
+        msgType = msgType + "/" + massActionScope;
+    }
 
     return msgType;
 };

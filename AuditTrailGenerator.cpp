@@ -1,13 +1,21 @@
 #include "AuditTrailGenerator.h"
 #include "AuditTrailBase.h"
+#include "AuditTrailOrderMassActionReport.h"
 
 std::string AuditTrailGenerator::generateAuditTrail(const Message &message, const std::string& txnTime) {
-    AuditTrailBase auditTrailBase(message, txnTime );
     auto msgType = message.getHeader().getField(FIX::FIELD::MsgType);
-    if(message.isApp() || (message.isAdmin() && (msgType == "3" || msgType == "j")) )
+
+    if(msgType == "BZ"){
+        AuditTrailOrderMassActionReport auditTrailOrderMassActionReport(message, txnTime);
+        return auditTrailOrderMassActionReport.getCSV();
+    }
+    if(message.isApp() || (message.isAdmin() && (msgType == "3" || msgType == "j")) ){
+        AuditTrailBase auditTrailBase(message, txnTime );
         return auditTrailBase.getCSV();
-    else
+    }
+    else{
         return "";
+    }
 }
 
 std::string AuditTrailGenerator::generateHeader() {

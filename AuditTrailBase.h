@@ -58,7 +58,8 @@ public:
 
     static const std::string FROM_CME;
     static const std::string TO_CME;
-private:
+
+protected:
     Message message_;
     std::string txnTime_;
 
