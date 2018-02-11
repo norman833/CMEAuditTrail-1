@@ -228,7 +228,14 @@ std::string AuditTrailBase::getOrderQualifier() {
 }
 
 std::string AuditTrailBase::getIFMFlag() {
-    return this->testAndGetField(9768);
+    auto  msgType = this->message_.getHeader().getField(FIX::FIELD::MsgType);
+
+    auto flag = this->testAndGetField(9768);
+
+    if(msgType == "G" && flag == ""){
+        flag = "N";
+    }
+    return flag;
 }
 
 std::string AuditTrailBase::getDisplayQuantity(){
