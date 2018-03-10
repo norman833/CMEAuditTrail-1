@@ -1,0 +1,3 @@
+mac:build cc$ ./CMEAuditTrail 
+
+Usage: ./CMEAuditTrail <source_log_file_name> <target_audit_trail_file_name> 
